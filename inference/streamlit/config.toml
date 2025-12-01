@@ -1,0 +1,38 @@
+[server]
+# Maximum file upload size in MB
+# Set to 5GB (5000 MB) - adjust as needed
+maxUploadSize = 5000
+
+# Increase message size limit for large responses
+maxMessageSize = 500
+
+# Enable CORS for development
+enableCORS = false
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+[browser]
+# Disable server address gathering to speed up startup
+gatherUsageStats = false
+
+[runner]
+# Increase the maximum run time
+# Set to 0 for no limit
+magicEnabled = true
+
+# Fast rerun for better performance
+fastReruns = true
+
+[client]
+# Increase the timeout for longer processing times
+# Time in seconds (3600 = 1 hour)
+showErrorDetails = true
+
+[theme]
+# Optional: Custom theme colors
+primaryColor = "#2a5298"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#f8f9fa"
+textColor = "#262730"
+font = "sans serif"

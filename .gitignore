@@ -1,0 +1,7 @@
+/Features
+/src
+dockerfile
+.dockerignore
+/img
+/env
+.DS_Store
