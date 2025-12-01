@@ -246,6 +246,10 @@ elif page == "⚽ Inference":
     
     st.markdown("---")
     
+    # Initialize session state for video path
+    if 'selected_video_path' not in st.session_state:
+        st.session_state.selected_video_path = None
+    
     st.markdown("### 📤 Upload Video")
     os.makedirs("temp_uploads", exist_ok=True)
     
@@ -259,7 +263,6 @@ elif page == "⚽ Inference":
             help="Upload your football match video file (recommended for files under 200MB)"
         )
         
-        temp_video_path = None
         if uploaded_file is not None:
             st.success(f"✅ Video uploaded: {uploaded_file.name}")
             
@@ -287,6 +290,9 @@ elif page == "⚽ Inference":
             
             save_progress.empty()
             st.success("✅ Video saved successfully!")
+            
+            # Save to session state
+            st.session_state.selected_video_path = temp_video_path
     
     with upload_tab2:
         st.info("💡 Select a video file from your repository or enter a path")
@@ -299,17 +305,8 @@ elif page == "⚽ Inference":
             st.success(f"✅ Default video found: {default_video}")
             
             if st.button("📁 Use Repository Video", key="use_default_video"):
-                temp_video_path = default_video
-                
-                file_size = os.path.getsize(temp_video_path) / (1024 * 1024)
-                file_size_gb = file_size / 1024
-                
-                st.success(f"✅ Video ready: {os.path.basename(temp_video_path)}")
-                
-                if file_size_gb >= 1:
-                    st.info(f"📊 File size: {file_size_gb:.2f} GB")
-                else:
-                    st.info(f"📊 File size: {file_size:.2f} MB")
+                st.session_state.selected_video_path = default_video
+                st.rerun()
             
             st.markdown("---")
             st.write("**Or enter a custom path:**")
@@ -322,12 +319,12 @@ elif page == "⚽ Inference":
         
         if file_path_input:
             if os.path.exists(file_path_input):
-                temp_video_path = file_path_input
+                # Save to session state
+                st.session_state.selected_video_path = file_path_input
+                st.success(f"✅ Video found: {os.path.basename(file_path_input)}")
                 
                 file_size = os.path.getsize(file_path_input) / (1024 * 1024)
                 file_size_gb = file_size / 1024
-                
-                st.success(f"✅ Video found: {os.path.basename(file_path_input)}")
                 
                 if file_size_gb >= 1:
                     st.info(f"📊 File size: {file_size_gb:.2f} GB")
@@ -335,9 +332,11 @@ elif page == "⚽ Inference":
                     st.info(f"📊 File size: {file_size:.2f} MB")
             else:
                 st.error(f"❌ File not found: {file_path_input}")
-                temp_video_path = None
+                st.session_state.selected_video_path = None
     
-    if temp_video_path:
+    # Use session state for processing
+    if st.session_state.selected_video_path:
+        temp_video_path = st.session_state.selected_video_path
         
         file_size_mb = os.path.getsize(temp_video_path) / (1024 * 1024)
         
