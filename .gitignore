@@ -5,3 +5,4 @@ dockerfile
 /img
 /env
 .DS_Store
+/highlights_filtered

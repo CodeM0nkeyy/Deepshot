@@ -289,7 +289,30 @@ elif page == "⚽ Inference":
             st.success("✅ Video saved successfully!")
     
     with upload_tab2:
-        st.info("💡 Enter the full path to your video file on disk (recommended for large files)")
+        st.info("💡 Select a video file from your repository or enter a path")
+        
+        # Check if default video exists in repo
+        default_video = "final2022.mp4"
+        video_exists = os.path.exists(default_video)
+        
+        if video_exists:
+            st.success(f"✅ Default video found: {default_video}")
+            
+            if st.button("📁 Use Repository Video", key="use_default_video"):
+                temp_video_path = default_video
+                
+                file_size = os.path.getsize(temp_video_path) / (1024 * 1024)
+                file_size_gb = file_size / 1024
+                
+                st.success(f"✅ Video ready: {os.path.basename(temp_video_path)}")
+                
+                if file_size_gb >= 1:
+                    st.info(f"📊 File size: {file_size_gb:.2f} GB")
+                else:
+                    st.info(f"📊 File size: {file_size:.2f} MB")
+            
+            st.markdown("---")
+            st.write("**Or enter a custom path:**")
         
         file_path_input = st.text_input(
             "Video File Path",
